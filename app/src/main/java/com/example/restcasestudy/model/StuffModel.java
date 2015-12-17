@@ -17,6 +17,26 @@ public class StuffModel {
     private String location;
     private String name;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private String changed;
+
+
+    /**
+     *
+     * @return
+     * The changed
+     */
+    public String getChanged() {
+        return changed;
+    }
+
+    /**
+     *
+     * @param changed
+     * The changed
+     */
+    public void setChanged(String changed) {
+        this.changed = changed;
+    }
 
     /**
      * @return The id
