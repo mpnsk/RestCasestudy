@@ -17,6 +17,7 @@ import com.example.restcasestudy.model.StuffModel;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,32 +60,49 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        StuffApi service = retrofit.create(StuffApi.class);
-        Call<StuffModel> call = service.getById(1);
-        call.enqueue(new Callback<StuffModel>() {
+        final StuffApi service = retrofit.create(StuffApi.class);
+
+        //  Read
+        Call<StuffModel> readCall = service.getById(10);
+
+        readCall.enqueue(new Callback<StuffModel>() {
             @Override
             public void onResponse(Response<StuffModel> response, Retrofit retrofit) {
-                int statusCode = response.code();
-                Log.e("RETRO", response.toString());
-                StuffModel stuffModel = response.body();
-                Log.e("RETRO", stuffModel.getName());
 
-                Context context = getApplicationContext();
-//                CharSequence text = "Hello toast!";
-                int duration = Toast.LENGTH_LONG;
-                Toast toast = Toast.makeText(context, stuffModel.getId() + ", " + stuffModel.getName() + " @ " + stuffModel.getLocation(), duration);
-                toast.show();
+            StuffModel newStuffModel2 = response.body();
+                // Update
+//        StuffModel newStuffModel2 = new StuffModel();
+                Timestamp timestamp = new Timestamp(new Date().getTime());
+                Log.e("TIMESTAMP", timestamp.toString());
+                newStuffModel2.setChanged(timestamp.toString());
+                newStuffModel2.setName("12345");
+                newStuffModel2.setLocation("12345");
+                Log.e("timestamp", timestamp.toString());
+                Call<StuffModel> updateCall = service.update(10, newStuffModel2);
+                updateCall.enqueue(new Callback<StuffModel>() {
+                    @Override
+                    public void onResponse(Response<StuffModel> response, Retrofit retrofit) {
+                        Log.e("RETRORETURN", "SUCCESS");
+//                Log.e("Response is", response.body().toString());
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+                        Log.e("RETRORETURN", "FAILURE! " + t.getMessage());
+
+
+                    }
+                });
+
 
             }
-
             @Override
             public void onFailure(Throwable t) {
-                // Log error here since request failed
-                Log.e("RETRO", "ERROR!!!" + t.getMessage());
+                Log.e("RETRO", "error in getting the object" + t.getMessage());
             }
         });
 
-
+//        Get All
 //        Call<List<StuffModel>> call2 = service.getAll();
 //        call2.enqueue(new Callback<List<StuffModel>>() {
 //            @Override
@@ -103,9 +121,7 @@ public class MainActivity extends AppCompatActivity {
 //                int duration = Toast.LENGTH_LONG;
 //                Toast toast = Toast.makeText(context, toastText, duration);
 //                toast.show();
-//
 //            }
-//
 //
 //            @Override
 //            public void onFailure(Throwable t) {
@@ -114,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
+/*
+        // Create
         StuffModel newStuffModel = new StuffModel();
         Timestamp timestamp = new Timestamp(new Date().getTime());
         Log.e("TIMESTAMP", timestamp.toString());
@@ -121,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
         newStuffModel.setName("new Name");
         newStuffModel.setLocation("new Location");
         Log.e("timestamp", timestamp.toString());
-        Call<StuffModel> call3 = service.post(newStuffModel);
-        call3.enqueue(new Callback<StuffModel>() {
+        Call<StuffModel> createCall = service.post(newStuffModel);
+        createCall.enqueue(new Callback<StuffModel>() {
             @Override
             public void onResponse(Response<StuffModel> response, Retrofit retrofit) {
                 Log.e("RETRORETURN", "SUCCESS");
@@ -131,38 +149,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 Log.e("RETRORETURN", "FAILURE! " + t.getMessage());
-
-
             }
         });
+*/
 
-
-//        call3.enqueue(new Callback<StuffModel>() {});
-//            @Override
-//            public void onResponse(Response<StuffModel> response, Retrofit retrofit) {
-//                int statusCode = response.code();
-//                Log.e("RETRO", response.toString());
-//                StuffModel stuffModel = response.body();
-////                Log.e("RETRO", stuffModel.getName());
-//
-//                Context context = getApplicationContext();
-////                CharSequence text = "Hello toast!";
-//                int duration = Toast.LENGTH_LONG;
-//                Toast toast = Toast.makeText(context, stuffModel.getId() + ", " + stuffModel.getName() + " @ " + stuffModel.getLocation(), duration);
-//                toast.show();
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                // Log error here since request failed
-//                Log.e("RETRO", "ERROR!!!" + t.getMessage());
-//            }
-//        });
     }
-
-
-
 
 
     @Override
