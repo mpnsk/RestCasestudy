@@ -1,27 +1,22 @@
 package com.example.restcasestudy;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 
 import com.example.restcasestudy.api.StuffApi;
 import com.example.restcasestudy.model.StuffModel;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.logging.HttpLoggingInterceptor;
 
-import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import retrofit.Call;
 import retrofit.Callback;
@@ -69,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Response<StuffModel> response, Retrofit retrofit) {
 
-            StuffModel newStuffModel2 = response.body();
+                StuffModel newStuffModel2 = response.body();
                 // Update
 //        StuffModel newStuffModel2 = new StuffModel();
                 Timestamp timestamp = new Timestamp(new Date().getTime());
@@ -89,13 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Throwable t) {
                         Log.e("RETRORETURN", "FAILURE! " + t.getMessage());
-
-
                     }
                 });
 
 
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Log.e("RETRO", "error in getting the object" + t.getMessage());
